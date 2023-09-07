@@ -12,7 +12,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/blueskyxi3/sql_exporter"
+	"github.com/free/sql_exporter"
 	log "github.com/golang/glog"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/common/expfmt"

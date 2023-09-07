@@ -4,13 +4,13 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"strings"
-
 	_ "github.com/ClickHouse/clickhouse-go" // register the ClickHouse driver
 	_ "github.com/denisenkom/go-mssqldb"    // register the MS-SQL driver
 	_ "github.com/go-sql-driver/mysql"      // register the MySQL driver
 	log "github.com/golang/glog"
 	_ "github.com/lib/pq" // register the PostgreSQL driver
+	_ "github.com/sijms/go-ora/v2"
+	"strings"
 )
 
 // OpenConnection extracts the driver name from the DSN (expected as the URI scheme), adjusts it where necessary (e.g.
@@ -22,27 +22,31 @@ import (
 // dynamic way of loading a third party driver library (as e.g. with Java classpaths), so any driver additions require
 // a binary rebuild.
 //
-// MySQL
+// # MySQL
 //
 // Using the https://github.com/go-sql-driver/mysql driver, DSN format (passed to the driver stripped of the `mysql://`
 // prefix):
-//   mysql://username:password@protocol(host:port)/dbname?param=value
 //
-// PostgreSQL
+//	mysql://username:password@protocol(host:port)/dbname?param=value
+//
+// # PostgreSQL
 //
 // Using the https://godoc.org/github.com/lib/pq driver, DSN format (passed through to the driver unchanged):
-//   postgres://username:password@host:port/dbname?param=value
 //
-// MS SQL Server
+//	postgres://username:password@host:port/dbname?param=value
+//
+// # MS SQL Server
 //
 // Using the https://github.com/denisenkom/go-mssqldb driver, DSN format (passed through to the driver unchanged):
-//   sqlserver://username:password@host:port/instance?param=value
 //
-// Clickhouse
+//	sqlserver://username:password@host:port/instance?param=value
+//
+// # Clickhouse
 //
 // Using the https://github.com/kshvakov/clickhouse driver, DSN format (passed to the driver with the`clickhouse://`
 // prefix replaced with `tcp://`):
-//   clickhouse://host:port?username=username&password=password&database=dbname&param=value
+//
+//	clickhouse://host:port?username=username&password=password&database=dbname&param=value
 func OpenConnection(ctx context.Context, logContext, dsn string, maxConns, maxIdleConns int) (*sql.DB, error) {
 	// Extract driver name from DSN.
 	idx := strings.Index(dsn, "://")

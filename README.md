@@ -1,4 +1,4 @@
-# Prometheus SQL Exporter [![Build Status](https://travis-ci.org/free/sql_exporter.svg)](https://travis-ci.org/free/sql_exporter) [![Go Report Card](https://goreportcard.com/badge/github.com/free/sql_exporter)](https://goreportcard.com/report/github.com/free/sql_exporter) [![GoDoc](https://godoc.org/github.com/free/sql_exporter?status.svg)](https://godoc.org/github.com/free/sql_exporter) [![Docker Pulls](https://img.shields.io/docker/pulls/githubfree/sql_exporter.svg?maxAge=604800)](https://hub.docker.com/r/githubfree/sql_exporter)
+# Prometheus SQL Exporter [![Build Status](https://travis-ci.org/free/sql_exporter.svg)](https://travis-ci.org/free/sql_exporter) [![Go Report Card](https://goreportcard.com/badge/github.com/blueskyxi3/sql_exporter)](https://goreportcard.com/report/github.com/blueskyxi3/sql_exporter) [![GoDoc](https://godoc.org/github.com/blueskyxi3/sql_exporter?status.svg)](https://godoc.org/github.com/blueskyxi3/sql_exporter) [![Docker Pulls](https://img.shields.io/docker/pulls/githubfree/sql_exporter.svg?maxAge=604800)](https://hub.docker.com/r/githubfree/sql_exporter)
 
 Database agnostic SQL exporter for [Prometheus](https://prometheus.io).
 
@@ -20,11 +20,11 @@ metrics when queried more frequently than the configured interval.
 
 ## Usage
 
-Get Prometheus SQL Exporter, either as a [packaged release](https://github.com/free/sql_exporter/releases/latest), as a [Docker image](https://hub.docker.com/r/githubfree/sql_exporter) or
+Get Prometheus SQL Exporter, either as a [packaged release](https://github.com/blueskyxi3/sql_exporter/releases/latest), as a [Docker image](https://hub.docker.com/r/githubfree/sql_exporter) or
 build it yourself:
 
 ```
-$ go install github.com/free/sql_exporter/cmd/sql_exporter
+$ go install github.com/blueskyxi3/sql_exporter/cmd/sql_exporter
 ```
 
 then run it from the command line:
@@ -56,10 +56,10 @@ Prometheus to record `up=0` for that scrape. Only metrics defined by collectors 
 SQL Exporter process metrics are exported at `/sql_exporter_metrics`.
 
 The configuration examples listed here only cover the core elements. For a comprehensive and comprehensively documented
-configuration file check out 
-[`documentation/sql_exporter.yml`](https://github.com/free/sql_exporter/tree/master/documentation/sql_exporter.yml).
+configuration file check out
+[`documentation/sql_exporter.yml`](https://github.com/blueskyxi3/sql_exporter/tree/master/documentation/sql_exporter.yml).
 You will find ready to use "standard" DBMS-specific collector definitions in the
-[`examples`](https://github.com/free/sql_exporter/tree/master/examples) directory. You may contribute your own collector
+[`examples`](https://github.com/blueskyxi3/sql_exporter/tree/master/examples) directory. You may contribute your own collector
 definitions and metric additions if you think they could be more widely useful, even if they are merely different takes
 on already covered DBMSs.
 
@@ -84,7 +84,7 @@ target:
   # Data source name always has a URI schema that matches the driver name. In some cases (e.g. MySQL)
   # the schema gets dropped or replaced to match the driver expected DSN format.
   data_source_name: 'sqlserver://prom_user:prom_password@dbserver1.example.com:1433'
-
+  
   # Collectors (referenced by name) to execute on the target.
   collectors: [pricing_data_freshness]
 
@@ -142,6 +142,7 @@ MySQL | `mysql://user:passw@protocol(host:port)/dbname` | `user:passw@protocol(h
 PostgreSQL | `postgres://user:passw@host:port/dbname` | *unchanged*
 SQL Server | `sqlserver://user:passw@host:port/instance` | *unchanged*
 Clickhouse | `clickhouse://host:port?username=user&password=passw&database=dbname` | `tcp://host:port?username=user&password=passw&database=dbname`
+Oracle | `oracle://username:password@host:port/xx` | *unchanged*
 
 ## Why It Exists
 
@@ -155,3 +156,7 @@ Prometheus scrapes. This is partly a philosophical issue, but practical issues a
 jitter; duplicate data points; or collected but not scraped data points. The control they provide over which labels get
 applied is limited, and the base label set spammy. And finally, configurations are not easily reused without
 copy-pasting and editing across jobs and instances.
+
+## build
+make all
+// go build -o sql_exporter -mod=mod cmd/sql_exporter/main.go  
