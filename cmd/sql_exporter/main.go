@@ -7,17 +7,18 @@ import (
 	"os"
 	"runtime"
 
+	_ "net/http/pprof"
+
 	"github.com/free/sql_exporter"
 	log "github.com/golang/glog"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/prometheus/common/version"
-	_ "net/http/pprof"
 )
 
 var (
 	showVersion   = flag.Bool("version", false, "Print version information.")
-	listenAddress = flag.String("web.listen-address", ":9399", "Address to listen on for web interface and telemetry.")
+	listenAddress = flag.String("web.listen-address", ":9106", "Address to listen on for web interface and telemetry.")
 	metricsPath   = flag.String("web.metrics-path", "/metrics", "Path under which to expose metrics.")
 	configFile    = flag.String("config.file", "sql_exporter.yml", "SQL Exporter configuration file name.")
 )
@@ -27,6 +28,7 @@ func init() {
 }
 
 func main() {
+	fmt.Println("----START--------")
 	if os.Getenv("DEBUG") != "" {
 		runtime.SetBlockProfileRate(1)
 		runtime.SetMutexProfileFraction(1)

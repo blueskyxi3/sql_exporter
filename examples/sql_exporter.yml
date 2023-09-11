@@ -1,25 +1,26 @@
-# Global defaults.
+# 全局配置
 global:
-  # Subtracted from Prometheus' scrape_timeout to give us some headroom and prevent Prometheus from timing out first.
+  # 可以理解为执行sql语句的超时时间，这个值需要比prometheus的 `scrape_timeout` 值要小。如果配置了下方的 scrape_timeout_offset 值，那么最终的超时时间为， min(scrape_timeout, X-Prometheus-Scrape-Timeout-Seconds - scrape_timeout_offset)
+  # X-Prometheus-Scrape-Timeout-Seconds 为 prometheus 的超时时间，从请求头中获取的
+  scrape_timeout: 10s
+  # 从 prometheus 的超时时间中减去一个偏移量，防止 prometheus 先超时。
   scrape_timeout_offset: 500ms
-  # Minimum interval between collector runs: by default (0s) collectors are executed on every scrape.
+  # 各个sql收集器之间运行间隔的秒数
   min_interval: 0s
-  # Maximum number of open connections to any one target. Metric queries will run concurrently on multiple connections,
-  # as will concurrent scrapes.
+  # 允许获取到的数据库最大的连接数， <=0 表示不限制。
   max_connections: 3
-  # Maximum number of idle connections to any one target. Unless you use very long collection intervals, this should
-  # always be the same as max_connections.
+  # 允许空闲连接数的个数，<=0 不做限制
   max_idle_connections: 3
 
-# The target to monitor and the collectors to execute on it.
+# 配置监控的数据库和抓取信息
 target:
-  # Data source name always has a URI schema that matches the driver name. In some cases (e.g. MySQL)
-  # the schema gets dropped or replaced to match the driver expected DSN format.
-  data_source_name: 'sqlserver://prom_user:prom_password@dbserver1.example.com:1433'
+  # 配置数据库链接信息
+  # mysql://crmapp:crmapp@tcp(192.168.127.43:3306)/bss_crm
+  data_source_name: 'oracle://boss:oracle2019@192.168.127.152:1522/cdrtest'
+  # data_source_name: 'mysql://crmapp:crmapp@tcp(192.168.127.43:3306)/bss_crm'
 
-  # Collectors (referenced by name) to execute on the target.
-  collectors: [mssql_standard]
-
-# Collector files specifies a list of globs. One collector definition is read from each matching file.
+  # jdbc:mysql://192.168.101.22:3306/ctms?serverTimezone=Asia/Shanghai
+  # 收集器的名字, 对应者下方 collector_files 中具体的文件的 collector_name 的值
+  collectors: [collector_user]
 collector_files: 
-  - "*.collector.yml"
+  - "collectors/*.collector.yml"

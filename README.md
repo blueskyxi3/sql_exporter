@@ -41,7 +41,7 @@ Usage of ./sql_exporter:
   -config.file string
       SQL Exporter configuration file name. (default "sql_exporter.yml")
   -web.listen-address string
-      Address to listen on for web interface and telemetry. (default ":9399")
+      Address to listen on for web interface and telemetry. (default ":9106")
   -web.metrics-path string
       Path under which to expose metrics. (default "/metrics")
   [...]

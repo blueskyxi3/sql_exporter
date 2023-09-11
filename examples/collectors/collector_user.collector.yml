@@ -1,0 +1,11 @@
+# 收集器的名字
+collector_name: collector_user
+
+metrics:
+  - metric_name: every_day_register_users # 指标的名字
+    type: counter # 类型
+    help: '统计每天的注册人数.' # 描述
+    values: [REGISTER_USERS] # 值
+    #       select count(1) register_users from carr_area
+    query: |
+      select 8 REGISTER_USERS from dual
